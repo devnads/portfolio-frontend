@@ -19,7 +19,7 @@ const config: Config = {
         "calc-100vh-128px": "calc(100vh - 128px)",
       },
       fontFamily: {
-        syne: ["var(--font-syne)", "sans-serif"],
+        syne: ["var(--font-syne-sans)", "sans-serif"],
         spaceGrotesk: ["var(--font-space-grotesk)", "sans-serif"],
         digital: ["Digital-7", "monospace"],
       },
