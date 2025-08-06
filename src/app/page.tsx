@@ -1,16 +1,32 @@
-import { Home } from "@/features/home";
+import { Projects } from "@/features/projects";
 import { Dev } from "@/types/dev";
 import { Project } from "@/types/project";
 
 async function getProjectsData(): Promise<Project[]> {
-  const res = await fetch(`${process.env.API_ENDPOINT}/projects`);
-  const projects = await res.json();
+  let newProjects = [];
+  let newDevs = [];
 
-  const resDevs = await fetch(`${process.env.API_ENDPOINT}/devs`);
-  const devs = await resDevs.json();
+  try {
+    const res = await fetch(`${process.env.API_ENDPOINT}/projects`);
+    console.log(res);
+    const projects = await res.json();
+    newProjects = projects;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+  try {
+    const resDevs = await fetch(`${process.env.API_ENDPOINT}/devs`);
+    console.log(resDevs);
+    const devs = await resDevs.json();
+    newDevs = devs;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 
-  const newData = projects.map((project: Project) => {
-    const dev = devs.find((dev: Dev) => dev.id === project.dev_id);
+  const newData = newProjects.map((project: Project) => {
+    const dev = newDevs.find((dev: Dev) => dev.id === project.dev_id);
     return {
       ...project,
       dev,
@@ -22,5 +38,5 @@ async function getProjectsData(): Promise<Project[]> {
 
 export default async function HomePage() {
   const data = await getProjectsData();
-  return <Home projects={data} />;
+  return <Projects projects={data} />;
 }
